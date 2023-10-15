@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ex45_3._0_
 {
@@ -15,7 +12,6 @@ namespace ex45_3._0_
             const string CommandExit = "3";
 
             RailwayStation railwayStation = new RailwayStation();
-            Train train = new Train();
 
             bool isOpen = true;
 
@@ -30,10 +26,11 @@ namespace ex45_3._0_
                 switch (Console.ReadLine())
                 {
                     case CommandAddDirection:
-                        railwayStation.AddDirection(train);
+                        railwayStation.AddDirection();
                         break;
 
                     case CommandShowAllDirections:
+                        railwayStation.ShowInfo();
                         break;
 
                     case CommandExit:
@@ -47,41 +44,100 @@ namespace ex45_3._0_
         }
     }
 
-    class Train
+    class RailwayStation
     {
+        List<Direction> _directions = new List<Direction>();
         List<Wagon> _wagons = new List<Wagon>();
+        List<Train> _trains = new List<Train>();
 
         Wagon _smallWagon = new Wagon(20, 'S');
         Wagon _mediumWagon = new Wagon(50, 'M');
         Wagon _largeWagon = new Wagon(100, 'L');
 
-        public string DrawWagons()
+        public void AddDirection()
+        {
+            CreateRoute();
+            CreatePassengersCount();
+            CreateTrain();
+        }
+
+        public void ShowInfo()
+        {
+            int position = 1;
+            Console.Clear();
+
+            if (_trains.Count > 0)
+            {
+                Console.WriteLine("Направления: ");
+
+                foreach (Direction direction in _directions)
+                {
+                    direction.ShowInfo();
+                }
+
+                Console.SetCursorPosition(40, 0);
+                Console.Write("Поезда: ");
+
+                foreach (Train train in _trains)
+                {
+                    Console.SetCursorPosition(40, position);
+                    train.ShowInfo();
+                    position++;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Пока направлений нет...");
+            }
+        }
+
+        private int CreatePassengersCount()
+        {
+            Random random = new Random();
+            int passengersCount = random.Next(100, 501);
+            return passengersCount;
+        }
+
+        private string DrawWagons()
         {
             string train = "";
 
             foreach (Wagon wagon in _wagons)
             {
-                wagon.ShowInfo();
+                train += wagon.ShowInfo();
             }
 
-            return train += _wagons;
+            return train;
         }
 
-        public void Create()
+        private void CreateRoute()
+        {
+            Console.Write("\nВпишите точку отправления: ");
+            string departure = Console.ReadLine();
+            Console.Write("Впишите точку прибытия: ");
+            string arrival = Console.ReadLine();
+            _directions.Add(new Direction(departure, arrival));
+        }
+
+        private void CreateTrain()
         {
             const string CommandAddSmallWagon = "1";
             const string CommandAddMediumWagon = "2";
             const string CommandAddLargeWagon = "3";
             const string CommandSendTrain = "4";
 
+            List<Wagon> wagons = new List<Wagon>();
+            _wagons = wagons;
+
             bool isPassengersPlanted = true;
             int passengersCount = CreatePassengersCount();
 
             while (isPassengersPlanted)
             {
+                Console.Clear();
                 Console.SetCursorPosition(0, 10);
                 Console.WriteLine("Поезд:");
-                DrawWagons();
+                Console.WriteLine(DrawWagons());
                 Console.SetCursorPosition(0, 0);
 
                 if (passengersCount > 0)
@@ -93,7 +149,6 @@ namespace ex45_3._0_
                     int freePlaces = passengersCount * -1;
                     Console.WriteLine($"В поезде есть {freePlaces} свободных мест");
                 }
-
 
                 Console.Write($"{CommandAddSmallWagon} - добавляет вагон вместимостью {_smallWagon.Capacity} мест\n" +
                     $"{CommandAddMediumWagon} - добавляет вагон вместимостью {_mediumWagon.Capacity} мест\n" +
@@ -123,16 +178,11 @@ namespace ex45_3._0_
                 Console.ReadKey();
                 Console.Clear();
             }
+
+            _trains.Add(new Train(DrawWagons()));
         }
 
-        public int CreatePassengersCount()
-        {
-            Random random = new Random();
-            int passengersCount = random.Next(100, 501);
-            return passengersCount;
-        }
-
-        public void AddWagon(Wagon wagon)
+        private void AddWagon(Wagon wagon)
         {
             _wagons.Add(wagon);
         }
@@ -163,27 +213,19 @@ namespace ex45_3._0_
         }
     }
 
-    class RailwayStation
+    class Train
     {
-        List<Direction> _directions = new List<Direction>();
-        List<string> _trains = new List<string>();
+        private string _trainMark;
 
-        public void CreateRoute()
+        public Train(string trainMark)
         {
-            Console.Write("\nВпишите точку отправления: ");
-            string departure = Console.ReadLine();
-            Console.Write("Впишите точку прибытия: ");
-            string arrival = Console.ReadLine();
-            _directions.Add(new Direction(departure, arrival));
+            _trainMark = trainMark;
         }
 
-
-
-        public void AddDirection(Train train)
+        public void ShowInfo()
         {
-            CreateRoute();
-            train.CreatePassengersCount();
-            train.Create();
+            Console.Write($"{_trainMark}");
+            Console.WriteLine("[)");
         }
     }
 
@@ -198,9 +240,9 @@ namespace ex45_3._0_
         public int Capacity { get; private set; }
         public char Mark { get; private set; }
 
-        public void ShowInfo()
+        public string ShowInfo()
         {
-            Console.Write($"[{Mark}]-");
+            return $"[{Mark}]-";
         }
     }
 
@@ -217,7 +259,7 @@ namespace ex45_3._0_
 
         public void ShowInfo()
         {
-            Console.Write($"{_pointOfDeparture} - {_pointOfArrival}");
+            Console.WriteLine($"{_pointOfDeparture} - {_pointOfArrival}");
         }
     }
 }
