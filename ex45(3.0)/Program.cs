@@ -10,25 +10,34 @@ namespace ex45_3._0_
     {
         static void Main(string[] args)
         {
+            const string CommandAddDirection = "1";
+            const string CommandShowAllDirections = "2";
+            const string CommandExit = "3";
+
             RailwayStation railwayStation = new RailwayStation();
             Train train = new Train();
 
-            while (true)
+            bool isOpen = true;
+
+            while (isOpen)
             {
-                Console.Write("Ваш ввод: ");
+                Console.WriteLine("Конфигуратор пассажирских поездов");
+                Console.Write($"\n{CommandAddDirection} - создать направление\n" +
+                    $"{CommandShowAllDirections} - показать все направления\n" +
+                    $"{CommandExit} - выйти из программы\n" +
+                    $"\nВаш ввод: ");
 
                 switch (Console.ReadLine())
                 {
-                    case "1":
-                        railwayStation.CreateRoute();
-                        railwayStation.CreatePassengersCount();
-                        train.Create(railwayStation);
+                    case CommandAddDirection:
+                        railwayStation.AddDirection(train);
                         break;
 
-                    case "2":
+                    case CommandShowAllDirections:
                         break;
 
-                    case "3":
+                    case CommandExit:
+                        isOpen = false;
                         break;
                 }
 
@@ -58,15 +67,7 @@ namespace ex45_3._0_
             return train += _wagons;
         }
 
-        public void ClearWagons()
-        {
-            foreach (Wagon wagon in _wagons)
-            {
-                _wagons.Remove(wagon);
-            }
-        }
-
-        public void Create(RailwayStation railwayStation)
+        public void Create()
         {
             const string CommandAddSmallWagon = "1";
             const string CommandAddMediumWagon = "2";
@@ -74,7 +75,7 @@ namespace ex45_3._0_
             const string CommandSendTrain = "4";
 
             bool isPassengersPlanted = true;
-            int passengersCount = railwayStation.CreatePassengersCount();
+            int passengersCount = CreatePassengersCount();
 
             while (isPassengersPlanted)
             {
@@ -124,6 +125,13 @@ namespace ex45_3._0_
             }
         }
 
+        public int CreatePassengersCount()
+        {
+            Random random = new Random();
+            int passengersCount = random.Next(100, 501);
+            return passengersCount;
+        }
+
         public void AddWagon(Wagon wagon)
         {
             _wagons.Add(wagon);
@@ -169,11 +177,13 @@ namespace ex45_3._0_
             _directions.Add(new Direction(departure, arrival));
         }
 
-        public int CreatePassengersCount()
+
+
+        public void AddDirection(Train train)
         {
-            Random random = new Random();
-            int passengersCount = random.Next(100, 501);
-            return passengersCount;
+            CreateRoute();
+            train.CreatePassengersCount();
+            train.Create();
         }
     }
 
