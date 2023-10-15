@@ -12,7 +12,6 @@ namespace ex45_3._0_
             const string CommandExit = "3";
 
             RailwayStation railwayStation = new RailwayStation();
-
             bool isOpen = true;
 
             while (isOpen)
