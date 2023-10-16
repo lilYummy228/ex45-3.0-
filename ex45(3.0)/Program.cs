@@ -103,7 +103,7 @@ namespace ex45_3._0_
 
             foreach (Wagon wagon in _wagons)
             {
-                train += wagon.ShowInfo();
+                train += wagon.GetInfo();
             }
 
             return train;
@@ -233,15 +233,15 @@ namespace ex45_3._0_
         public Wagon(int capacity, char mark)
         {
             Capacity = capacity;
-            Mark = mark;
+            _mark = mark;
         }
 
         public int Capacity { get; private set; }
-        public char Mark { get; private set; }
+        private char _mark;
 
-        public string ShowInfo()
+        public string GetInfo()
         {
-            return $"[{Mark}]-";
+            return $"[{_mark}]-";
         }
     }
 
