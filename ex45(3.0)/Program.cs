@@ -129,7 +129,7 @@ namespace ex45_3._0_
 
             if (isExist == false)
             {
-                _directions.Add(new Direction(departure, arrival));
+                GetDirection(departure, arrival);
                 return false;
             }
             else
@@ -138,6 +138,11 @@ namespace ex45_3._0_
                 Console.ReadKey();
                 return true;
             }
+        }
+
+        private void GetDirection(string departure, string arrival)
+        {
+            _directions.Add(new Direction(departure, arrival));
         }
 
         private void CreateTrain()
