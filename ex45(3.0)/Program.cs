@@ -54,9 +54,7 @@ namespace ex45_3._0_
 
         public void AddDirection()
         {
-            CreateRoute();
-
-            if (IsExist() == false)
+            if (IsDirectionAlreadyExist() == false)
             {
                 CreateTrain();
             }
@@ -113,7 +111,7 @@ namespace ex45_3._0_
             return train;
         }
 
-        private void CreateRoute()
+        private bool IsDirectionAlreadyExist()
         {
             Console.Write("\nВпишите точку отправления: ");
             string departure = Console.ReadLine();
@@ -125,25 +123,21 @@ namespace ex45_3._0_
             {
                 if (direction.PointOfDeparture == departure && direction.PointOfArrival == arrival)
                 {
-                    Console.WriteLine("Такое направление уже есть...");
-                    Console.ReadKey();
                     isExist = true;
                 }
             }
 
-            if (isExist)
+            if (isExist == false)
             {
                 _directions.Add(new Direction(departure, arrival));
+                return false;
             }
             else
             {
-                IsExist();
+                Console.WriteLine("Такое направление уже есть...");
+                Console.ReadKey();
+                return true;
             }
-        }
-
-        private bool IsExist()
-        {
-            return true;
         }
 
         private void CreateTrain()
