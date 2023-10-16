@@ -37,7 +37,6 @@ namespace ex45_3._0_
                         break;
                 }
 
-                Console.ReadLine();
                 Console.Clear();
             }
         }
@@ -55,7 +54,7 @@ namespace ex45_3._0_
 
         public void AddDirection()
         {
-            CreateRoute();            
+            CreateRoute();
             CreateTrain();
         }
 
@@ -87,6 +86,8 @@ namespace ex45_3._0_
             {
                 Console.WriteLine("Пока направлений нет...");
             }
+
+            Console.ReadKey();
         }
 
         private int CreatePassengersCount()
@@ -110,11 +111,30 @@ namespace ex45_3._0_
 
         private void CreateRoute()
         {
+            bool isContain = false;
             Console.Write("\nВпишите точку отправления: ");
             string departure = Console.ReadLine();
             Console.Write("Впишите точку прибытия: ");
             string arrival = Console.ReadLine();
-            _directions.Add(new Direction(departure, arrival));
+
+            foreach (Direction direction in _directions)
+            {
+                if (direction.PointOfDeparture == departure && direction.PointOfArrival == arrival)
+                {
+                    Console.WriteLine("Такое направление уже есть...");
+                    isContain = true;
+                    Console.ReadKey();
+                }
+            }
+            if (isContain == false)
+            {
+                _directions.Add(new Direction(departure, arrival));
+            }
+        }
+
+        private bool IsContain()
+        {
+
         }
 
         private void CreateTrain()
@@ -247,18 +267,18 @@ namespace ex45_3._0_
 
     class Direction
     {
-        private string _pointOfDeparture;
-        private string _pointOfArrival;
-
         public Direction(string pointOfDeparture, string pointOfArrival)
         {
-            _pointOfDeparture = pointOfDeparture;
-            _pointOfArrival = pointOfArrival;
+            PointOfDeparture = pointOfDeparture;
+            PointOfArrival = pointOfArrival;
         }
+
+        public string PointOfDeparture { get; private set; }
+        public string PointOfArrival { get; private set; }
 
         public void ShowInfo()
         {
-            Console.WriteLine($"{_pointOfDeparture} - {_pointOfArrival}");
+            Console.WriteLine($"{PointOfDeparture} - {PointOfArrival}");
         }
     }
 }
