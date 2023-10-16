@@ -55,8 +55,7 @@ namespace ex45_3._0_
 
         public void AddDirection()
         {
-            CreateRoute();
-            CreatePassengersCount();
+            CreateRoute();            
             CreateTrain();
         }
 
@@ -188,7 +187,7 @@ namespace ex45_3._0_
 
         private int RemovePassengers(int passengersCount, Wagon wagon)
         {
-            return passengersCount -= wagon.Capacity;
+            return passengersCount - wagon.Capacity;
         }
 
         private int SeatPassengers(Wagon wagon, int passengersCount)
@@ -230,6 +229,8 @@ namespace ex45_3._0_
 
     class Wagon
     {
+        private char _mark;
+
         public Wagon(int capacity, char mark)
         {
             Capacity = capacity;
@@ -237,7 +238,6 @@ namespace ex45_3._0_
         }
 
         public int Capacity { get; private set; }
-        private char _mark;
 
         public string GetInfo()
         {
